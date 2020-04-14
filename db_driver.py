@@ -38,6 +38,7 @@ class User_cash(Base):
 
 class User_portfolio(Base):
     __tablename__ = 'user_portfolio'
+    id = Column(Integer, Sequence('user_portfolio_id'), primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'))
     crypto_id = Column(Integer, ForeignKey('crypto_coin.id'))
 
