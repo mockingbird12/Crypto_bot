@@ -42,3 +42,7 @@ class User_portfolio(Base):
     user_id = Column(Integer, ForeignKey('users.id'))
     crypto_id = Column(Integer, ForeignKey('crypto_coin.id'))
 
+
+if __name__ == '__main__':
+    Base.metadata.create_all(engine)
+
