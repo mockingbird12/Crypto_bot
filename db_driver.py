@@ -1,6 +1,7 @@
 import config
 import psycopg2
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from sqlalchemy import Column
 from sqlalchemy import Integer
@@ -23,6 +24,10 @@ class Users(Base):
     tel_number = Column(Text)
     login = Column(Text)
 
+    def __init__(self, tel_number, login):
+        self.tel_number = tel_number
+        self.login = login
+
 
 class Crypro_coin(Base):
     __tablename__ = 'crypto_coin'
@@ -31,10 +36,20 @@ class Crypro_coin(Base):
     abberv = Column(Text)
     cost = Column(Float)
 
+    def __init__(self,name, abberv, cost):
+        self.name = name
+        self.abberv = abberv
+        self.cost = cost
+
 class User_cash(Base):
     __tablename__ = 'user_cash'
     id = Column(Integer, Sequence('cash_seq'), primary_key=True)
     cash = Column(Float)
+
+    def __init__(self, id, cash):
+        self.id = id
+        self.cash = cash
+
 
 class User_portfolio(Base):
     __tablename__ = 'user_portfolio'
@@ -42,4 +57,10 @@ class User_portfolio(Base):
     user_id = Column(Integer, ForeignKey('users.id'))
     crypto_id = Column(Integer, ForeignKey('crypto_coin.id'))
 
+    def __init__(self, user_id, crypto_id):
+        self.user_id = user_id
+        self.crypto_id = crypto_id
+
 Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+session = Session()
