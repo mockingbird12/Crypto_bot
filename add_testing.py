@@ -19,10 +19,12 @@ def addCryptoCoin(coin_name, coin_abberv, coin_cost):
     session.add(coin)
     session.commit()
 
+
 def delCryptoCoin(coin_name):
     coin = session.querry(Crypro_coin).filter(Crypro_coin.name == coin_name).one()
     session.delete(coin)
     session.commit()
+
 
 if __name__ == '__main__':
     addUser('+719828429', 'user1')

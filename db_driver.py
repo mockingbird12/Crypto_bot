@@ -50,6 +50,15 @@ class User_cash(Base):
         self.id = id
         self.cash = cash
 
+class User_Status(Base):
+    __tabename__ = 'user_status'
+    id = Column(Integer, Sequence('status_seq'), primary_key=True)
+    user_id = Column(Integer)
+    state = Column(Text)
+
+    def __init__(self, user_id, state):
+        self.user_id = user_id
+        self.state = state
 
 class User_portfolio(Base):
     __tablename__ = 'user_portfolio'
