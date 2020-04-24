@@ -12,7 +12,7 @@ def main_start(message):
 
 
 if __name__ == '__main__':
-    telebot.apihelper.proxy = {'https': 'socks5://192.168.77.130:9100'}
+    telebot.apihelper.proxy = {'https': 'socks5h://192.168.77.130:9100'}
     print('Start Bot')
     while True:
         try:
