@@ -1,8 +1,8 @@
 import telebot
-from telebot import apihelper
 import conversation
 import config
 import markup
+from db_functions import add_user
 
 
 bot = telebot.TeleBot(config.token)
@@ -52,6 +52,8 @@ def main_menu(call):
 
 @bot.message_handler(commands=['start'])
 def main_start(message):
+    print(message.from_user)
+    add_user(message.from_user.first_name, message.from_user.username, message.from_user.id)
     bot.send_message(message.chat.id, conversation.hello_message, reply_markup=markup.login())
 
 @bot.message_handler(content_types=['text'])

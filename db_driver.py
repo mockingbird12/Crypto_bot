@@ -21,12 +21,14 @@ engine = create_engine("postgresql://{0}:{1}@{2}/{3}".format(user, passwd, host,
 class Users(Base):
     __tablename__ = 'users'
     id = Column(Integer, Sequence('users_id_seq'), primary_key=True)
-    tel_number = Column(Text)
-    login = Column(Text)
+    first_name = Column(Text)
+    username = Column(Text)
+    user_id = Column(Integer, unique=True)
 
-    def __init__(self, tel_number, login):
-        self.tel_number = tel_number
-        self.login = login
+    def __init__(self, first_name, username, user_id):
+        self.first_name = first_name
+        self.username = username
+        self.user_id = user_id
 
 
 class Crypro_coin(Base):
@@ -51,7 +53,7 @@ class User_cash(Base):
         self.cash = cash
 
 class User_Status(Base):
-    __tabename__ = 'user_status'
+    __tablename__ = 'user_status'
     id = Column(Integer, Sequence('status_seq'), primary_key=True)
     user_id = Column(Integer)
     state = Column(Text)

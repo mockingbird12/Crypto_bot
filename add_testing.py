@@ -4,12 +4,12 @@ from db_driver import Crypro_coin
 
 
 def addUser(tel, name):
-    user = Users(tel_number=tel, login=name)
+    user = Users(first_name=tel, username=name)
     session.add(user)
     session.commit()
 
 def delUser(tel):
-    user = session.querry(Users).filter(Users.tel_number == tel).one()
+    user = session.querry(Users).filter(Users.first_name == tel).one()
     session.delete(user)
     session.commit()
 
