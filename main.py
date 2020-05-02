@@ -15,17 +15,19 @@ def coin_count(message):
 def chouse_coin(message):
     bot.send_message(message.chat.id, conversation.chouse_coin)
 
-@bot.message_handler(commands=['sell_coin'])
+@bot.message_handler(func=lambda message: message.text == 'My portfolio')
+def watch_portfolio(message):
+    bot.send_message(message.chat.id, conversation.watch_portfolio)
+
+@bot.message_handler(func=lambda message: message.text == 'Sell coin')
 def sell_coin(message):
     bot.send_message(message.chat.id, conversation.sell_coin)
 
-
-@bot.message_handler(commands=['buy_coin'])
+@bot.message_handler(func=lambda message: message.text == 'Buy coin')
 def buy_coin(message):
     bot.send_message(message.chat.id, conversation.buy_coin)
 
-@bot.message_handler(func=lambda message: message.text == 'Crypto')
-# @bot.message_handler(commands=['watch_course'])
+@bot.message_handler(func=lambda message: message.text == 'Watch course')
 def watch_course(message):
     bot.send_message(message.chat.id, conversation.watch_course)
 
@@ -55,9 +57,7 @@ def main_start(message):
         bot.send_message(message.chat.id, conversation.welcome_message%message.from_user.username, reply_markup=markup.main_menu())
 
 
-@bot.message_handler(func=lambda message: message.text == 'Просмотр портфеля')
-def watch_portfolio(message):
-    bot.send_message(message.chat.id, conversation.watch_portfolio)
+
 # @bot.message_handler(content_types=['text'])
 # def text_function(message):
 #     bot.send_message(message.chat.id, 'Ответ: {0}'.format(message.text), reply_markup=markup.hider())
