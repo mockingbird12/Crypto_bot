@@ -2,9 +2,8 @@ from telebot import types
 
 def main_menu():
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
-    button = types.KeyboardButton('Просмотр потрфеля')
-    items = [types.KeyboardButton('Просмотр потрфеля'), types.KeyboardButton('Купить монету'),
-             types.KeyboardButton('Курс криптовалют'), types.KeyboardButton('Продать монету')]
+    items = [types.KeyboardButton('Просмотр потрфеля'), types.KeyboardButton('Buy'),
+             types.KeyboardButton('Crypto'), types.KeyboardButton('Продать монету')]
     for item in items:
         markup.add(item)
     return markup

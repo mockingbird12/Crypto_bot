@@ -2,7 +2,7 @@ import telebot
 import conversation
 import config
 import markup
-from db_functions import add_user
+from db_functions import add_user, is_exsist
 
 
 bot = telebot.TeleBot(config.token)
@@ -24,13 +24,8 @@ def sell_coin(message):
 def buy_coin(message):
     bot.send_message(message.chat.id, conversation.buy_coin)
 
-
-@bot.message_handler(commands=['watch_portfolio'])
-def watch_portfolio(message):
-    bot.send_message(message.chat.id, conversation.watch_portfolio)
-
-
-@bot.message_handler(commands=['watch_course'])
+@bot.message_handler(func=lambda message: message.text == 'Crypto')
+# @bot.message_handler(commands=['watch_course'])
 def watch_course(message):
     bot.send_message(message.chat.id, conversation.watch_course)
 
@@ -50,15 +45,22 @@ def main_menu(call):
         bot.send_message(call.message.chat.id, conversation.hello_logged, reply_markup=markup.main_menu())
 
 
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=['help','start'])
 def main_start(message):
     print(message.from_user)
-    add_user(message.from_user.first_name, message.from_user.username, message.from_user.id)
-    bot.send_message(message.chat.id, conversation.hello_message, reply_markup=markup.login())
+    if not is_exsist(user_id=message.from_user.id):
+        add_user(message.from_user.first_name, message.from_user.username, message.from_user.id)
+        bot.send_message(message.chat.id, conversation.welcome_message%message.from_user.username, reply_markup=markup.login())
+    else:
+        bot.send_message(message.chat.id, conversation.welcome_message%message.from_user.username, reply_markup=markup.main_menu())
 
-@bot.message_handler(content_types=['text'])
-def text_function(message):
-    bot.send_message(message.chat.id, 'Ответ: {0}'.format(message.text), reply_markup=markup.hider())
+
+@bot.message_handler(func=lambda message: message.text == 'Просмотр портфеля')
+def watch_portfolio(message):
+    bot.send_message(message.chat.id, conversation.watch_portfolio)
+# @bot.message_handler(content_types=['text'])
+# def text_function(message):
+#     bot.send_message(message.chat.id, 'Ответ: {0}'.format(message.text), reply_markup=markup.hider())
 
 
 if __name__ == '__main__':
