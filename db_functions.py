@@ -20,6 +20,9 @@ def is_exsist(**kwargs):
         return True
 
 
+def fill_user_cash(user_id):
+    pass
+
 def add_user(first_name, username, user_id):
     # TODO: разобраться с UnicodeEncodeError: 'ascii' codec can't encode...
     user = Users(first_name, username, user_id)

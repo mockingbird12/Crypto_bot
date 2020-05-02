@@ -19,11 +19,14 @@ Base = declarative_base()
 engine = create_engine("postgresql://{0}:{1}@{2}/{3}".format(user, passwd, host, dbname))
 
 class Users(Base):
+    """
+    Таблица с информацией по пользователям
+    """
     __tablename__ = 'users'
     id = Column(Integer, Sequence('users_id_seq'), primary_key=True)
     first_name = Column(Text)
     username = Column(Text)
-    user_id = Column(Integer, unique=True)
+    user_id = Column(Integer, unique=True) #может использовать его вместо id, он тоже уникален
 
     def __init__(self, first_name, username, user_id):
         self.first_name = first_name
@@ -44,15 +47,22 @@ class Crypro_coin(Base):
         self.cost = cost
 
 class User_cash(Base):
+    """
+    Таблица с достпуным кэшем пользователя
+    """
     __tablename__ = 'user_cash'
     id = Column(Integer, Sequence('cash_seq'), primary_key=True)
     cash = Column(Float)
+    user_id = Column(Integer, ForeignKey('users.user_id'))
 
     def __init__(self, id, cash):
         self.id = id
         self.cash = cash
 
 class User_Status(Base):
+    """
+    Таблица для отслеживания статуса пользователя
+    """
     __tablename__ = 'user_status'
     id = Column(Integer, Sequence('status_seq'), primary_key=True)
     user_id = Column(Integer)
