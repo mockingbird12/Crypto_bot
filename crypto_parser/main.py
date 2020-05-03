@@ -31,13 +31,13 @@ class Crypto_parser():
     def write_to_database(self):
         cost = self.quotes_data.get('c')[-1]
         print(cost)
-        # if write_coin_cost(coin_name=self.name, ticket=self.ticket, cost=None):
-        #     print('Write succesfull')
-        # else:
-        #     print('Error writing')
+        if write_coin_cost(coin_name=self.name, ticket=self.ticket, cost=cost):
+            print('Write succesfull')
+        else:
+            print('Error writing')
 
 
-for i in crypto_tickets:
-    crypta = Crypto_parser(i)
+for i in crypto_tickets.items():
+    crypta = Crypto_parser(i[0], i[1])
     crypta.get_data_from_bcs()
-    crypta.print_data()
+    crypta.write_to_database()
