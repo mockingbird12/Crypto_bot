@@ -1,5 +1,6 @@
 from db_driver import session
 from db_driver import Users
+from db_driver import Crypro_coin
 
 def is_exsist(**kwargs):
     """
@@ -19,6 +20,15 @@ def is_exsist(**kwargs):
         print('Find coin')
         return True
 
+def write_coin_cost(**kwargs):
+    # TODO: обновлять информацию в базе(удалять старое значение и записывать новое)
+    coin_name = kwargs.get('coin_name')
+    ticket = kwargs.get('ticket')
+    cost = kwargs.get('cost')
+    crypto_coin = Crypro_coin(coin_name, ticket, cost)
+    session.add(crypto_coin)
+    session.commit()
+    return True
 
 def fill_user_cash(user_id):
     pass

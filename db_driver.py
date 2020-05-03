@@ -38,12 +38,12 @@ class Crypro_coin(Base):
     __tablename__ = 'crypto_coin'
     id = Column(Integer, Sequence('crypto_id_seq'), primary_key=True)
     name = Column(Text)
-    abberv = Column(Text)
+    ticket = Column(Text)
     cost = Column(Float)
 
     def __init__(self,name, abberv, cost):
         self.name = name
-        self.abberv = abberv
+        self.ticket = abberv
         self.cost = cost
 
 class User_cash(Base):
