@@ -39,12 +39,12 @@ def logged_user(message):
 def unloged_user(message):
     bot.send_message(message.chat.id, conversation.hello_unlogged)
 
-@bot.callback_query_handler(func=lambda call:True)
-def main_menu(call):
-    if call.data == 'new_user':
-        bot.send_message(call.message.chat.id, conversation.hello_unlogged, reply_markup=markup.main_menu())
-    if call.data == 'old_user':
-        bot.send_message(call.message.chat.id, conversation.hello_logged, reply_markup=markup.main_menu())
+# @bot.callback_query_handler(func=lambda call:True)
+# def main_menu(call):
+#     if call.data == 'new_user':
+#         bot.send_message(call.message.chat.id, conversation.hello_unlogged, reply_markup=markup.main_menu())
+#     if call.data == 'old_user':
+#         bot.send_message(call.message.chat.id, conversation.hello_logged, reply_markup=markup.main_menu())
 
 
 @bot.message_handler(commands=['help','start'])

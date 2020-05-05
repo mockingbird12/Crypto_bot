@@ -51,9 +51,9 @@ class User_cash(Base):
     Таблица с достпуным кэшем пользователя
     """
     __tablename__ = 'user_cash'
-    id = Column(Integer, Sequence('cash_seq'), primary_key=True)
+    id = Column(Integer, ForeignKey('users.user_id'), primary_key=True)
     cash = Column(Float)
-    user_id = Column(Integer, ForeignKey('users.user_id'))
+    # user_id = Column(Integer, ForeignKey('users.user_id'))
 
     def __init__(self, id, cash):
         self.id = id
