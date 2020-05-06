@@ -31,11 +31,16 @@ def write_coin_cost(**kwargs):
     session.commit()
     return True
 
-def add_user_cash(user_id, cash=None):
+def __add_user_cash(user_id, cash=None):
     user_cash = User_cash(user_id, cash)
     session.add(user_cash)
     session.commit()
 
+def get_cash(user_id=None):
+    if user_id == None:
+        raise Exception('user id should\'nt be empty')
+    user_cash = session.query(User_cash).filter(User_cash.id == user_id).first()
+    return user_cash.cash
 
 def add_user(first_name, username, user_id):
     user = Users(first_name, username, user_id)
@@ -47,4 +52,4 @@ def add_user(first_name, username, user_id):
 
 
 if __name__ == "__main__":
-    add_user('Поля', 'кнопок', 11132)
+    print(get_cash(user_id=11122))

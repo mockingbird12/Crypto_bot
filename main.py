@@ -2,7 +2,7 @@ import telebot
 import conversation
 import config
 import markup
-from db_functions import add_user, is_exsist
+from db_functions import add_user, is_exsist, get_cash
 
 
 bot = telebot.TeleBot(config.token)
@@ -17,7 +17,9 @@ def chouse_coin(message):
 
 @bot.message_handler(func=lambda message: message.text == 'My portfolio')
 def watch_portfolio(message):
-    bot.send_message(message.chat.id, conversation.watch_portfolio)
+    user_cash = get_cash(message.chat.id)
+    bot.send_message(message.chat.id, conversation.watch_portfolio.format(user_cash))
+    print('Запрос к базе о портфеле')
 
 @bot.message_handler(func=lambda message: message.text == 'Sell coin')
 def sell_coin(message):
@@ -39,6 +41,8 @@ def logged_user(message):
 def unloged_user(message):
     bot.send_message(message.chat.id, conversation.hello_unlogged)
 
+# Не могу понять нужна тут какая-либо регистрация пользователя или нет
+#
 # @bot.callback_query_handler(func=lambda call:True)
 # def main_menu(call):
 #     if call.data == 'new_user':
@@ -52,9 +56,8 @@ def main_start(message):
     print(message.from_user)
     if not is_exsist(user_id=message.from_user.id):
         add_user(message.from_user.first_name, message.from_user.username, message.from_user.id)
-        bot.send_message(message.chat.id, conversation.welcome_message%message.from_user.username, reply_markup=markup.login())
-    else:
-        bot.send_message(message.chat.id, conversation.welcome_message%message.from_user.username, reply_markup=markup.main_menu())
+    bot.send_message(message.chat.id, conversation.welcome_message%message.from_user.username, reply_markup=markup.main_menu())
+
 
 
 
