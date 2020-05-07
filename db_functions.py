@@ -2,6 +2,8 @@ from db_driver import session
 from db_driver import Users
 from db_driver import Crypro_coin
 from db_driver import User_cash
+from db_driver import User_Status
+
 
 def is_exsist(**kwargs):
     """
@@ -42,6 +44,15 @@ def get_cash(user_id=None):
     user_cash = session.query(User_cash).filter(User_cash.id == user_id).first()
     return user_cash.cash
 
+def change_user_state(user_id=None, state=None):
+    user_state = User_Status(user_id, state)
+    session.add(user_state)
+    session.commit()
+
+def get_user_state(user_id):
+    state = session.query(User_Status).filter(User_Status.user_id == user_id).first()
+    return state.state
+
 def add_user(first_name, username, user_id):
     user = Users(first_name, username, user_id)
     user_cash = User_cash(user_id, 1000)
@@ -52,4 +63,4 @@ def add_user(first_name, username, user_id):
 
 
 if __name__ == "__main__":
-    print(get_cash(user_id=11122))
+    change_user_status(279305709, 141)

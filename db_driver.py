@@ -64,9 +64,9 @@ class User_Status(Base):
     Таблица для отслеживания статуса пользователя
     """
     __tablename__ = 'user_status'
-    id = Column(Integer, Sequence('status_seq'), primary_key=True)
-    user_id = Column(Integer)
-    state = Column(Text)
+    # id = Column(Integer, Sequence('status_seq'), primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.user_id'), primary_key=True)
+    state = Column(Integer)
 
     def __init__(self, user_id, state):
         self.user_id = user_id

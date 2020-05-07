@@ -2,7 +2,7 @@ import telebot
 import conversation
 import config
 import markup
-from db_functions import add_user, is_exsist, get_cash
+from db_functions import add_user, is_exsist, get_cash, change_user_state
 
 
 bot = telebot.TeleBot(config.token)
@@ -26,8 +26,14 @@ def sell_coin(message):
     bot.send_message(message.chat.id, conversation.sell_coin)
 
 @bot.message_handler(func=lambda message: message.text == 'Buy coin')
-def buy_coin(message):
-    bot.send_message(message.chat.id, conversation.buy_coin)
+def choose_coin(message):
+    # TODO: Нужно что-то придумать со слежением состояния пользователя
+    change_user_state(message.chat.id,config.state_buy_coin )
+    # Изменить состояние пользователя
+    bot.send_message(message.chat.id, conversation.buy_coin, reply_markup=markup.choose_coin())
+
+def choose_count(message):
+    pass
 
 @bot.message_handler(func=lambda message: message.text == 'Watch course')
 def watch_course(message):
