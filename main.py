@@ -2,7 +2,10 @@ import telebot
 import conversation
 import config
 import markup
-from db_functions import add_user, is_exsist, get_cash, change_user_state
+from db_functions import add_user, is_exsist, get_cash, change_user_state, get_user_state
+from db_functions import setup_user_operation
+from db_functions import get_coin_id
+from db_functions import crypto_value
 
 
 bot = telebot.TeleBot(config.token)
@@ -23,16 +26,28 @@ def watch_portfolio(message):
 
 @bot.message_handler(func=lambda message: message.text == 'Sell coin')
 def sell_coin(message):
+    change_user_state(message.from_user.id, config.state_sel_coin)
     bot.send_message(message.chat.id, conversation.sell_coin)
 
 @bot.message_handler(func=lambda message: message.text == 'Buy coin')
 def choose_coin(message):
     # TODO: Нужно что-то придумать со слежением состояния пользователя
-    change_user_state(message.chat.id,config.state_buy_coin )
+    change_user_state(message.from_user.id, config.state_buy_coin )
     # Изменить состояние пользователя
     bot.send_message(message.chat.id, conversation.buy_coin, reply_markup=markup.choose_coin())
 
+@bot.message_handler(func=lambda message: get_user_state(message.from_user.id) in [141, 142] )
 def choose_count(message):
+    coin = message.text
+    setup_user_operation(message.from_user.id, get_coin_id(coin), get_user_state(message.from_user.id))
+    change_user_state(message.from_user.id, config.choose_coin)
+    bot.send_message(message.chat.id, 'Монета: {0}'.format(coin))
+    bot.send_message(message.chat.id, conversation.coin_count)
+
+@bot.message_handler(func=lambda message: get_user_state(message.from_user.id in 143))
+def make_deal(message):
+    coin_count = int(message.text)
+    if crypto_value()
     pass
 
 @bot.message_handler(func=lambda message: message.text == 'Watch course')

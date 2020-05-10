@@ -82,6 +82,22 @@ class User_portfolio(Base):
         self.user_id = user_id
         self.crypto_id = crypto_id
 
+class User_operation(Base):
+    """
+        Таблица для отслеживания операций пользователей (покупка/продажа монет)
+    """
+    __tablename__ = 'user_operation'
+    id = Column(Integer, Sequence('user_operation_id'), primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.user_id'))
+    coin_id = Column(Integer, ForeignKey('crypto_coin.id'))
+    operation = Column(Text)
+
+    def __init__(self, user_id, coin_id, operation):
+        self.user_id = user_id
+        self.coin_id = coin_id
+        self.operation = operation
+
+
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
