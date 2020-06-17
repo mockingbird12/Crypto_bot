@@ -45,6 +45,7 @@ class Crypro_coin(Base):
 
     def __init__(self, date, name, abberv, cost):
         self.name = name
+        self.date = date
         self.ticket = abberv
         self.cost = cost
 

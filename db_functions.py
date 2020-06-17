@@ -30,7 +30,7 @@ def write_coin_cost(**kwargs):
     coin_name = kwargs.get('coin_name')
     ticket = kwargs.get('ticket')
     cost = kwargs.get('cost')
-    date = datetime.datetime
+    date = datetime.datetime.today()
     crypto_coin = Crypro_coin(date, coin_name, ticket, cost)
     session.add(crypto_coin)
     session.commit()
