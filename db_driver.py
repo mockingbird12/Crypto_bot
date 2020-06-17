@@ -8,6 +8,7 @@ from sqlalchemy import Integer
 from sqlalchemy import Float
 from sqlalchemy import Sequence
 from sqlalchemy import Text
+from sqlalchemy import DateTime
 from sqlalchemy import ForeignKey
 
 user = config.db_user
@@ -37,11 +38,12 @@ class Users(Base):
 class Crypro_coin(Base):
     __tablename__ = 'crypto_coin'
     id = Column(Integer, Sequence('crypto_id_seq'), primary_key=True)
+    date = Column(DateTime)
     name = Column(Text)
     ticket = Column(Text)
     cost = Column(Float)
 
-    def __init__(self,name, abberv, cost):
+    def __init__(self, date, name, abberv, cost):
         self.name = name
         self.ticket = abberv
         self.cost = cost

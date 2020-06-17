@@ -4,6 +4,7 @@ from db_driver import Crypro_coin
 from db_driver import User_cash
 from db_driver import User_Status
 from db_driver import User_operation
+import datetime
 
 
 def is_exsist(**kwargs):
@@ -29,7 +30,8 @@ def write_coin_cost(**kwargs):
     coin_name = kwargs.get('coin_name')
     ticket = kwargs.get('ticket')
     cost = kwargs.get('cost')
-    crypto_coin = Crypro_coin(coin_name, ticket, cost)
+    date = datetime.datetime
+    crypto_coin = Crypro_coin(date, coin_name, ticket, cost)
     session.add(crypto_coin)
     session.commit()
     return True
