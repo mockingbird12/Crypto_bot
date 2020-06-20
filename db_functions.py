@@ -1,10 +1,45 @@
 from db_driver import session
 from db_driver import Users
-from db_driver import Crypro_coin
 from db_driver import User_cash
 from db_driver import User_Status
 from db_driver import User_operation
+from db_driver import Bitcoin, Dash, Etherium, IOTA, Litecoin, Monero, Ripple, Zcash
 import datetime
+
+class Crypto_coin:
+    coin = None
+
+    def write_data(self, cost, date):
+        self.coin.date = date
+        self.coin.cost = cost
+        session.add(self.coin)
+        session.commit()
+
+
+class Bitcoin_work(Crypto_coin):
+    coin = Bitcoin()
+
+class Dash_work(Crypto_coin):
+    coin = Dash()
+
+class Etherium_work(Crypto_coin):
+    coin = Etherium()
+
+class Iota_work(Crypto_coin):
+    coin = IOTA()
+
+class Litecoin_work(Crypto_coin):
+    coin = Litecoin()
+
+class Monero_work(Crypto_coin):
+    coin = Monero()
+
+class Ripple_work(Crypto_coin):
+    coin = Ripple()
+
+class Zcash_work(Crypto_coin):
+    coin = Zcash()
+
 
 
 def is_exsist(**kwargs):
@@ -43,14 +78,17 @@ def get_coin_id(coin_name):
     else:
         return None
 
+
 def crypto_value(coin_name, coin_count):
     coin = session.query(Crypro_coin).filter(Crypro_coin.name == coin_name).first()
     return coin.cost * coin_count
+
 
 def __add_user_cash(user_id, cash=None):
     user_cash = User_cash(user_id, cash)
     session.add(user_cash)
     session.commit()
+
 
 def get_cash(user_id=None):
     if user_id == None:

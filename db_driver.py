@@ -35,7 +35,7 @@ class Users(Base):
         self.user_id = user_id
 
 
-class Crypro_coin(Base):
+class Crypto_coin(Base):
     __tablename__ = 'crypto_coin'
     id = Column(Integer, Sequence('crypto_id_seq'), primary_key=True)
     date = Column(DateTime)
@@ -52,114 +52,51 @@ class Crypro_coin(Base):
 class Bitcoin(Base):
     __tablename__ = 'bitcoin'
     id = Column(Integer, Sequence('bitcoin_id_seq'), primary_key=True)
-    date = Column(DateTime)
-    name = Column(Text)
-    ticket = Column(Text)
+    date = Column(Integer)
     cost = Column(Float)
-
-    def __init__(self, date, name, abberv, cost):
-        self.name = name
-        self.date = date
-        self.ticket = abberv
-        self.cost = cost
 
 class Dash(Base):
     __tablename__ = 'dash'
     id = Column(Integer, Sequence('dash_id_seq'), primary_key=True)
-    date = Column(DateTime)
-    name = Column(Text)
-    ticket = Column(Text)
+    date = Column(Integer)
     cost = Column(Float)
-
-    def __init__(self, date, name, abberv, cost):
-        self.name = name
-        self.date = date
-        self.ticket = abberv
-        self.cost = cost
 
 class Etherium(Base):
     __tablename__ = 'etherium'
     id = Column(Integer, Sequence('etherium_id_seq'), primary_key=True)
-    date = Column(DateTime)
-    name = Column(Text)
-    ticket = Column(Text)
+    date = Column(Integer)
     cost = Column(Float)
-
-    def __init__(self, date, name, abberv, cost):
-        self.name = name
-        self.date = date
-        self.ticket = abberv
-        self.cost = cost
 
 class IOTA(Base):
     __tablename__ = 'iota'
     id = Column(Integer, Sequence('iota_id_seq'), primary_key=True)
-    date = Column(DateTime)
-    name = Column(Text)
-    ticket = Column(Text)
+    date = Column(Integer)
     cost = Column(Float)
 
-    def __init__(self, date, name, abberv, cost):
-        self.name = name
-        self.date = date
-        self.ticket = abberv
-        self.cost = cost
 
 class Litecoin(Base):
     __tablename__ = 'litecoin'
     id = Column(Integer, Sequence('litecoin_id_seq'), primary_key=True)
-    date = Column(DateTime)
-    name = Column(Text)
-    ticket = Column(Text)
+    date = Column(Integer)
     cost = Column(Float)
-
-    def __init__(self, date, name, abberv, cost):
-        self.name = name
-        self.date = date
-        self.ticket = abberv
-        self.cost = cost
 
 class Monero(Base):
     __tablename__ = 'monero'
     id = Column(Integer, Sequence('monero_id_seq'), primary_key=True)
-    date = Column(DateTime)
-    name = Column(Text)
-    ticket = Column(Text)
+    date = Column(Integer)
     cost = Column(Float)
-
-    def __init__(self, date, name, abberv, cost):
-        self.name = name
-        self.date = date
-        self.ticket = abberv
-        self.cost = cost
 
 class Ripple(Base):
     __tablename__ = 'ripple'
     id = Column(Integer, Sequence('ripple_id_seq'), primary_key=True)
-    date = Column(DateTime)
-    name = Column(Text)
-    ticket = Column(Text)
+    date = Column(Integer)
     cost = Column(Float)
-
-    def __init__(self, date, name, abberv, cost):
-        self.name = name
-        self.date = date
-        self.ticket = abberv
-        self.cost = cost
 
 class Zcash(Base):
     __tablename__ = 'zcash'
     id = Column(Integer, Sequence('zcash_id_seq'), primary_key=True)
-    date = Column(DateTime)
-    name = Column(Text)
-    ticket = Column(Text)
+    date = Column(Integer)
     cost = Column(Float)
-
-    def __init__(self, date, name, abberv, cost):
-        self.name = name
-        self.date = date
-        self.ticket = abberv
-        self.cost = cost
 
 class User_cash(Base):
     """
