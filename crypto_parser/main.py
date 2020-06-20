@@ -37,7 +37,7 @@ class Crypto_parser():
             print('Error writing')
 
 
-for i in crypto_tickets.items():
-    crypta = Crypto_parser(i[0], i[1])
-    crypta.get_data_from_bcs()
-    crypta.write_to_database()
+#for i in crypto_tickets.items():
+#    crypta = Crypto_parser(i[0], i[1])
+#    crypta.get_data_from_bcs()
+#    crypta.write_to_database()
