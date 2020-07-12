@@ -6,41 +6,14 @@ from db_driver import User_operation
 from db_driver import Bitcoin, Dash, Etherium, IOTA, Litecoin, Monero, Ripple, Zcash
 import datetime
 
-class Crypto_coin:
-    coin = None
 
-    def write_data(self, cost, date):
-        self.coin.date = date
-        self.coin.cost = cost
-        session.add(self.coin)
+def add_coin_cost(crypto_coin, date, cost):
+    while date:
+        coin = crypto_coin()
+        coin.date = date.pop()
+        coin.cost = cost.pop()
+        session.add(coin)
         session.commit()
-
-
-class Bitcoin_work(Crypto_coin):
-    coin = Bitcoin()
-
-class Dash_work(Crypto_coin):
-    coin = Dash()
-
-class Etherium_work(Crypto_coin):
-    coin = Etherium()
-
-class Iota_work(Crypto_coin):
-    coin = IOTA()
-
-class Litecoin_work(Crypto_coin):
-    coin = Litecoin()
-
-class Monero_work(Crypto_coin):
-    coin = Monero()
-
-class Ripple_work(Crypto_coin):
-    coin = Ripple()
-
-class Zcash_work(Crypto_coin):
-    coin = Zcash()
-
-
 
 def is_exsist(**kwargs):
     """
@@ -60,16 +33,6 @@ def is_exsist(**kwargs):
         print('Find coin')
         return True
 
-def write_coin_cost(**kwargs):
-    # TODO: обновлять информацию в базе(удалять старое значение и записывать новое)
-    coin_name = kwargs.get('coin_name')
-    ticket = kwargs.get('ticket')
-    cost = kwargs.get('cost')
-    date = datetime.datetime.today()
-    crypto_coin = Crypro_coin(date, coin_name, ticket, cost)
-    session.add(crypto_coin)
-    session.commit()
-    return True
 
 def get_coin_id(coin_name):
     coin = session.query(Crypro_coin).filter(Crypro_coin.name == coin_name).first()

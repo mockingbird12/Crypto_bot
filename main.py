@@ -47,7 +47,7 @@ def choose_count(message):
 @bot.message_handler(func=lambda message: get_user_state(message.from_user.id in 143))
 def make_deal(message):
     coin_count = int(message.text)
-    if crypto_value()
+    if crypto_value():
     pass
 
 @bot.message_handler(func=lambda message: message.text == 'Watch course')
