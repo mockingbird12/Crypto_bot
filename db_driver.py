@@ -17,7 +17,11 @@ host = config.db_host
 dbname = config.db_name
 
 Base = declarative_base()
-engine = create_engine("postgresql://{0}:{1}@{2}/{3}".format(user, passwd, host, dbname))
+
+if config.app_type == 'host':
+    engine = create_engine("postgresql://{0}:{1}@{2}/{3}".format(user, passwd, host, dbname))
+if config.app_type == 'server':
+    engine = create_engine("sqlite:///sqlite.db")
 
 class Users(Base):
     """

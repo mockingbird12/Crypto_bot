@@ -48,7 +48,7 @@ def choose_count(message):
 def make_deal(message):
     coin_count = int(message.text)
     if crypto_value():
-    pass
+        pass
 
 @bot.message_handler(func=lambda message: message.text == 'Watch course')
 def watch_course(message):
@@ -88,6 +88,6 @@ def main_start(message):
 
 
 if __name__ == '__main__':
-    telebot.apihelper.proxy = {'https': 'socks5h://192.168.77.130:9100'}
+    # telebot.apihelper.proxy = {'https': 'socks5h://192.168.77.130:9100'}
     print('Start Bot')
     bot.polling()
