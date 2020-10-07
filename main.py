@@ -36,7 +36,7 @@ def choose_coin(message):
     # Изменить состояние пользователя
     bot.send_message(message.chat.id, conversation.buy_coin, reply_markup=markup.choose_coin())
 
-@bot.message_handler(func=lambda message: get_user_state(message.from_user.id) in [141, 142] )
+@bot.message_handler(func=lambda message: get_user_state(message.from_user.id))
 def choose_count(message):
     coin = message.text
     setup_user_operation(message.from_user.id, get_coin_id(coin), get_user_state(message.from_user.id))
@@ -44,7 +44,7 @@ def choose_count(message):
     bot.send_message(message.chat.id, 'Монета: {0}'.format(coin))
     bot.send_message(message.chat.id, conversation.coin_count)
 
-@bot.message_handler(func=lambda message: get_user_state(message.from_user.id in 143))
+@bot.message_handler(func=lambda message: get_user_state(message.from_user.id))
 def make_deal(message):
     coin_count = int(message.text)
     if crypto_value():
