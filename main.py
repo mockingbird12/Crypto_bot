@@ -28,7 +28,7 @@ def watch_portfolio(message):
 @bot.message_handler(func=lambda message: message.text == 'Sell coin')
 def sell_coin(message):
     change_user_state(message.from_user.id, config.state_sel_coin)
-    bot.send_message(message.chat.id, conversation.sell_coin)
+    bot.send_message(message.chat.id, conversation.sell_coin, reply_markup=markup.choose_coin())
 
 @bot.message_handler(func=lambda message: message.text == 'Buy coin')
 def choose_coin(message):
