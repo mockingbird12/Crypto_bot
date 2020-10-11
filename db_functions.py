@@ -3,6 +3,7 @@ from db_driver import Users
 from db_driver import User_cash
 from db_driver import User_Status
 from db_driver import User_operation
+from db_driver import Crypto_coin
 from db_driver import Bitcoin, Dash, Etherium, IOTA, Litecoin, Monero, Ripple, Zcash
 import datetime
 
@@ -35,7 +36,7 @@ def is_exsist(**kwargs):
 
 
 def get_coin_id(coin_name):
-    coin = session.query(Crypro_coin).filter(Crypro_coin.name == coin_name).first()
+    coin = session.query(Crypto_coin).filter(Crypto_coin.name == coin_name).first()
     if coin:
         return coin.id
     else:
@@ -43,7 +44,7 @@ def get_coin_id(coin_name):
 
 
 def crypto_value(coin_name, coin_count):
-    coin = session.query(Crypro_coin).filter(Crypro_coin.name == coin_name).first()
+    coin = session.query(Crypto_coin).filter(Crypto_coin.name == coin_name).first()
     return coin.cost * coin_count
 
 
@@ -66,6 +67,12 @@ def change_user_state(user_id=None, state=None):
     user_state = User_Status(user_id, state)
     session.add(user_state)
     session.commit()
+
+def clear_user_state(user_id=None):
+    if session.query(User_Status).filter(User_Status.user_id == user_id).first():
+        user = session.query(User_Status).filter(User_Status.user_id == user_id).first()
+        session.delete(user)
+        session.commit()
 
 def setup_user_operation(user_id=None, coin_id=None, operation=None):
     user_operation = session.query(User_operation).filter(User_operation.user_id == user_id).first()
