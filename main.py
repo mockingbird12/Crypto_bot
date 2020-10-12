@@ -2,6 +2,7 @@ import telebot
 import conversation
 import config
 import markup
+import cherrypy
 from db_functions import add_user, is_exsist, get_cash, change_user_state, get_user_state, clear_user_state
 from db_functions import setup_user_operation
 from db_functions import get_coin_id
@@ -84,7 +85,33 @@ def main_start(message):
     bot.send_message(message.chat.id, conversation.welcome_message%message.from_user.username, reply_markup=markup.main_menu())
 
 
+class WebhookServer(object):
+    @cherrypy.expose
+    def index(self):
+        if 'content-length' in cherrypy.request.headers and 'content-type' in cherrypy.request.headers and \
+                               cherrypy.request.headers['content-type'] == 'application/json':
+            length = int(cherrypy.request.headers['content-length'])
+            json_string = cherrypy.request.body.read(length).decode('utf-8')
+            update = telebot.types.Update.de_json(json_string)
+            bot.process_new_updates([update])
+            return ''
+        else:
+            raise cherrypy.HTTPError(403)
+
+
 if __name__ == '__main__':
-    # telebot.apihelper.proxy = {'https': 'socks5h://192.168.77.130:9100'}
     print('Start Bot')
-    bot.polling()
+    if config.working_mode == 'host':
+        bot.polling()
+    if config.working_mode == 'server':
+        bot.remove_webhook()
+        bot.set_webhook(url=config.WEBHOOK_URL_BASE + config.WEBHOOK_URL_PATH,
+                        certificate=open(config.WEBHOOK_SSL_CERT, 'r'))
+        cherrypy.config.update({
+            'server.socket_host': config.WEBHOOK_LISTEN,
+            'server.socket_port': config.WEBHOOK_PORT,
+            'server.ssl_module': 'builtin',
+            'server.ssl_certificate': config.WEBHOOK_SSL_CERT,
+            'server.ssl_private_key': config.WEBHOOK_SSL_PRIV
+        })
+        cherrypy.quickstart(WebhookServer, config.WEBHOOK_URL_PATH, {'/':{}})
