@@ -114,4 +114,4 @@ if __name__ == '__main__':
             'server.ssl_certificate': config.WEBHOOK_SSL_CERT,
             'server.ssl_private_key': config.WEBHOOK_SSL_PRIV
         })
-        cherrypy.quickstart(WebhookServer, config.WEBHOOK_URL_PATH, {'/':{}})
+        cherrypy.quickstart(WebhookServer(), config.WEBHOOK_URL_PATH, {'/':{}})

@@ -1,7 +1,7 @@
 token = '1238244677:AAE0CQraYtpWvooXUVbgfp9tO1l_bartmx0'
 
 WEBHOOK_HOST = '80.87.193.164'
-WEBHOOK_PORT = '443'
+WEBHOOK_PORT = 443
 WEBHOOK_LISTEN = '0.0.0.0'
 
 WEBHOOK_SSL_CERT = './webhook_cert.pem'
