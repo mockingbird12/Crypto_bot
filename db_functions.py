@@ -8,13 +8,28 @@ from db_driver import Bitcoin, Dash, Etherium, IOTA, Litecoin, Monero, Ripple, Z
 import datetime
 
 
-def add_coin_cost(crypto_coin, date, cost):
-    while date:
-        coin = crypto_coin()
-        coin.date = date.pop()
-        coin.cost = cost.pop()
-        session.add(coin)
-        session.commit()
+def get_coin_course(coin):
+    result = session.query(coin).last()
+    if result:
+        return result.cost
+    else:
+        return None
+
+
+# def add_coin_cost(crypto_coin, date, cost):
+#     coin = crypto_coin()
+#     coin.date = date[-1]
+#     coin.cost = cost[-1]
+#     session.add(coin)
+#     session.commit()
+
+def add_coin_cost(coin_name, date, cost):
+    coin = Crypto_coin()
+    coin.name = coin_name
+    coin.date = date[-1]
+    coin.cost = cost[-1]
+    session.add(coin)
+    session.commit()
 
 def is_exsist(**kwargs):
     """

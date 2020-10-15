@@ -12,8 +12,8 @@ WEBHOOK_URL_PATH = '/{0}/'.format(token)
 
 db_user = 'crypto_user'
 db_passwd = '111111'
-# db_host = '192.168.77.130'
-db_host = '172.17.0.1' # docker interface
+#db_host = '192.168.77.130' # localhost
+db_host = '172.17.0.1'   # docker interface
 db_name = 'crypto_bot'
 
 # working_mode = 'host'
