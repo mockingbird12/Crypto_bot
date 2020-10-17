@@ -1,5 +1,5 @@
 FROM python:3
-# test
+
 WORKDIR /app
 
 COPY requirements.txt ./
@@ -10,4 +10,5 @@ RUN ["pip3", "install", "pytelegrambotapi", "--upgrade"]
 
 COPY . .
 
-CMD ["python", "./main.py"]
+#CMD ["python", "./main.py"]
+CMD ["python", "./crypto_parser.py"]
