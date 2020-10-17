@@ -3,10 +3,18 @@ from db_driver import Users
 from db_driver import User_cash
 from db_driver import User_Status
 from db_driver import User_operation
-from db_driver import Crypto_coin
-from db_driver import Bitcoin, Dash, Etherium, IOTA, Litecoin, Monero, Ripple, Zcash
+from db_driver import Crypto_coin, Crypto_coin_name
 import datetime
 
+def add_coin_name(name):
+    coin_name = session.query(Crypto_coin_name).filter(Crypto_coin_name.name == name).first()
+    if coin_name:
+        print('Coin with this name exsist')
+    else:
+        coin_name = Crypto_coin_name()
+        coin_name.name = name
+        session.add(coin_name)
+        session.commit()
 
 def get_coin_course(coin):
     result = session.query(coin).last()
@@ -14,14 +22,6 @@ def get_coin_course(coin):
         return result.cost
     else:
         return None
-
-
-# def add_coin_cost(crypto_coin, date, cost):
-#     coin = crypto_coin()
-#     coin.date = date[-1]
-#     coin.cost = cost[-1]
-#     session.add(coin)
-#     session.commit()
 
 def add_coin_cost(coin_name, date, cost):
     coin = Crypto_coin()

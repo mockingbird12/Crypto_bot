@@ -2,17 +2,8 @@ import urllib.request
 import json
 import time
 import requests
-from db_functions import add_coin_cost
+from db_functions import add_coin_cost, add_coin_name
 from db_driver import Crypto_coin
-from db_driver import Bitcoin
-from db_driver import Dash
-from db_driver import Etherium
-from db_driver import IOTA
-from db_driver import Litecoin
-from db_driver import Monero
-from db_driver import Ripple
-from db_driver import Zcash
-
 
 # crypto_tickets = {Bitcoin:'BTCUSD', Dash:'dashusd', Etherium:'ethusd',
 #                   IOTA:'iotusd', Litecoin:'ltcusd', Monero:'xmrusd',Ripple:'xrpusd',Zcash:'zecusd'}
@@ -32,4 +23,5 @@ def get_data_from_bcs(ticket):
 if __name__ == '__main__':
     for coin in crypto_tickets.keys():
         cost, date = get_data_from_bcs(crypto_tickets.get(coin))
-        add_coin_cost(coin, date, cost)
+        add_coin_name(coin)
+        # add_coin_cost(coin, date, cost)

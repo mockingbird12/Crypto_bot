@@ -35,69 +35,20 @@ class Users(Base):
         self.username = username
         self.user_id = user_id
 
+class Crypto_coin_name(Base):
+    __tablename__ = 'crypto_coin_name'
+    id = Column(Integer, Sequence('crypto_coin_id_seq'), primary_key=True)
+    name = Column(Text, unique=True)
+
 
 class Crypto_coin(Base):
     __tablename__ = 'crypto_coin'
     id = Column(Integer, Sequence('crypto_id_seq'), primary_key=True)
     date = Column(Integer)
-    name = Column(Text)
-    ticket = Column(Text)
+    name = Column(Integer, ForeignKey('crypto_coin_name.id'))
+    # ticket = Column(Text)
     cost = Column(Float)
 
-    # def __init__(self, date, name, abbrev, cost):
-    #     self.name = name
-    #     self.date = date
-    #     self.ticket = abbrev
-    #     self.cost = cost
-
-class Bitcoin(Base):
-    __tablename__ = 'bitcoin'
-    id = Column(Integer, Sequence('bitcoin_id_seq'), primary_key=True)
-    date = Column(Integer, unique=True)
-    cost = Column(Float)
-
-class Dash(Base):
-    __tablename__ = 'dash'
-    id = Column(Integer, Sequence('dash_id_seq'), primary_key=True)
-    date = Column(Integer, unique=True)
-    cost = Column(Float)
-
-class Etherium(Base):
-    __tablename__ = 'etherium'
-    id = Column(Integer, Sequence('etherium_id_seq'), primary_key=True)
-    date = Column(Integer, unique=True)
-    cost = Column(Float)
-
-class IOTA(Base):
-    __tablename__ = 'iota'
-    id = Column(Integer, Sequence('iota_id_seq'), primary_key=True)
-    date = Column(Integer, unique=True)
-    cost = Column(Float)
-
-
-class Litecoin(Base):
-    __tablename__ = 'litecoin'
-    id = Column(Integer, Sequence('litecoin_id_seq'), primary_key=True)
-    date = Column(Integer, unique=True)
-    cost = Column(Float)
-
-class Monero(Base):
-    __tablename__ = 'monero'
-    id = Column(Integer, Sequence('monero_id_seq'), primary_key=True)
-    date = Column(Integer, unique=True)
-    cost = Column(Float)
-
-class Ripple(Base):
-    __tablename__ = 'ripple'
-    id = Column(Integer, Sequence('ripple_id_seq'), primary_key=True)
-    date = Column(Integer, unique=True)
-    cost = Column(Float)
-
-class Zcash(Base):
-    __tablename__ = 'zcash'
-    id = Column(Integer, Sequence('zcash_id_seq'), primary_key=True)
-    date = Column(Integer, unique=True)
-    cost = Column(Float)
 
 class User_cash(Base):
     """
