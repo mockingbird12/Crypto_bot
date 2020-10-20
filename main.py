@@ -4,7 +4,7 @@ import config
 import markup
 import cherrypy
 from db_functions import add_user, is_exsist, get_cash, change_user_state, get_user_state, clear_user_state
-from db_functions import setup_user_operation
+from db_functions import setup_user_operation, get_all_coin_id, get_coin_cost, get_coin_name
 from db_functions import get_coin_id
 from db_functions import crypto_value
 
@@ -16,9 +16,11 @@ bot = telebot.TeleBot(config.token)
 def coin_count(message):
     bot.send_message(message.chat.id, conversation.coin_count)
 
+
 @bot.message_handler(commands=['chose_coin'])
 def chouse_coin(message):
     bot.send_message(message.chat.id, conversation.chouse_coin)
+
 
 @bot.message_handler(func=lambda message: message.text == 'My portfolio')
 def watch_portfolio(message):
@@ -26,16 +28,19 @@ def watch_portfolio(message):
     bot.send_message(message.chat.id, conversation.watch_portfolio.format(user_cash))
     print('Запрос к базе о портфеле')
 
+
 @bot.message_handler(func=lambda message: message.text == 'Sell coin')
 def sell_coin(message):
     change_user_state(message.from_user.id, config.state_sel_coin)
     bot.send_message(message.chat.id, conversation.sell_coin, reply_markup=markup.choose_coin())
+
 
 @bot.message_handler(func=lambda message: message.text == 'Buy coin')
 def choose_coin(message):
     change_user_state(message.from_user.id, config.state_buy_coin )
     # Изменить состояние пользователя
     bot.send_message(message.chat.id, conversation.buy_coin, reply_markup=markup.choose_coin())
+
 
 @bot.message_handler(func=lambda message: get_user_state(message.from_user.id) == config.state_buy_coin or
                                           get_user_state(message.from_user.id) == config.state_sel_coin)
@@ -45,6 +50,7 @@ def choose_count(message):
     change_user_state(message.from_user.id, config.choose_coin)
     bot.send_message(message.chat.id, 'Монета: {0}'.format(coin))
     bot.send_message(message.chat.id, conversation.coin_count)
+
 
 @bot.message_handler(func=lambda message: get_user_state(message.from_user.id) == config.choose_coin)
 def make_deal(message):
@@ -57,7 +63,11 @@ def make_deal(message):
 @bot.message_handler(func=lambda message: message.text == 'Watch course')
 def watch_course(message):
     bot.send_message(message.chat.id, conversation.watch_course)
-
+    coins = get_all_coin_id()
+    cost_info = ''
+    for coin in coins:
+        cost_info = cost_info + '{0} - {1}\n'.format(get_coin_name(coin.id), get_coin_cost(coin.id))
+    bot.send_message(message.chat.id, cost_info)
 
 @bot.message_handler(commands=['help','start'])
 def main_start(message):

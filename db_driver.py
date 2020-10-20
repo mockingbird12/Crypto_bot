@@ -41,7 +41,7 @@ class Crypto_coin_name(Base):
     name = Column(Text, unique=True)
 
 
-class Crypto_coin(Base):
+class Crypto_coin_cost(Base):
     __tablename__ = 'crypto_coin'
     id = Column(Integer, Sequence('crypto_id_seq'), primary_key=True)
     date = Column(Integer)

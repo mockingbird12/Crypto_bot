@@ -3,7 +3,7 @@ from db_driver import Users
 from db_driver import User_cash
 from db_driver import User_Status
 from db_driver import User_operation
-from db_driver import Crypto_coin, Crypto_coin_name
+from db_driver import Crypto_coin_cost, Crypto_coin_name
 import datetime
 
 def add_coin_name(name):
@@ -16,6 +16,13 @@ def add_coin_name(name):
         session.add(coin_name)
         session.commit()
 
+def get_coin_name(coin_id):
+    coin_name = session.query(Crypto_coin_name).filter(Crypto_coin_name.id == coin_id).first()
+    if coin_name:
+        return coin_name.name
+    else:
+        return None
+
 def get_coin_course(coin):
     result = session.query(coin).last()
     if result:
@@ -24,12 +31,28 @@ def get_coin_course(coin):
         return None
 
 def add_coin_cost(coin_name, date, cost):
-    coin = Crypto_coin()
-    coin.name = coin_name
-    coin.date = date[-1]
-    coin.cost = cost[-1]
-    session.add(coin)
+    coin_id = get_coin_id(coin_name)
+    while date:
+        one_date = date.pop(0)
+        one_cost = cost.pop(0)
+        result = session.query(Crypto_coin_cost).filter(Crypto_coin_cost.name == coin_id, Crypto_coin_cost.date == one_date).first()
+        if not result:
+            coin = Crypto_coin_cost()
+            coin.name = get_coin_id(coin_name)
+            coin.date = one_date
+            coin.cost = one_cost
+            session.add(coin)
+        else:
+            print('Date {0} in coin {1} already exsist in table'.format(one_date, coin_name))
     session.commit()
+
+
+def get_coin_cost(coin_id):
+    result = session.query(Crypto_coin_cost).filter(Crypto_coin_cost.name == coin_id).first()
+    if result:
+        return result.cost
+    else:
+        return None
 
 def is_exsist(**kwargs):
     """
@@ -51,15 +74,20 @@ def is_exsist(**kwargs):
 
 
 def get_coin_id(coin_name):
-    coin = session.query(Crypto_coin).filter(Crypto_coin.name == coin_name).first()
+    coin = session.query(Crypto_coin_name).filter(Crypto_coin_name.name == coin_name).first()
     if coin:
         return coin.id
     else:
         return None
 
 
+def get_all_coin_id():
+    coins = session.query(Crypto_coin_name).all()
+    return coins
+
+
 def crypto_value(coin_name, coin_count):
-    coin = session.query(Crypto_coin).filter(Crypto_coin.name == coin_name).first()
+    coin = session.query(Crypto_coin_cost).filter(Crypto_coin_cost.name == coin_name).first()
     return coin.cost * coin_count
 
 
@@ -117,5 +145,4 @@ def add_user(first_name, username, user_id):
 
 
 if __name__ == "__main__":
-    change_user_state(279305709, None)
-    setup_user_operation(279305709, 5,'buy')
+    get_all_coin_id()
