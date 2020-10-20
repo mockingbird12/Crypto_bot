@@ -21,7 +21,9 @@ def get_data_from_bcs(ticket):
 
 
 if __name__ == '__main__':
-    for coin in crypto_tickets.keys():
-        cost, date = get_data_from_bcs(crypto_tickets.get(coin))
-        add_coin_name(coin)
-        add_coin_cost(coin, date, cost)
+    while True:
+        for coin in crypto_tickets.keys():
+            cost, date = get_data_from_bcs(crypto_tickets.get(coin))
+            add_coin_name(coin)
+            add_coin_cost(coin, date, cost)
+        time.sleep(1800)
