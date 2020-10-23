@@ -49,6 +49,9 @@ class Crypto_coin_cost(Base):
     # ticket = Column(Text)
     cost = Column(Float)
 
+    def __repr__(self):
+        return "{0} {1} {2} {3}".format(self.id, self.date, self.name, self.cost)
+
 
 class User_cash(Base):
     """

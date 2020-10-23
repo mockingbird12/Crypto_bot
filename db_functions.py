@@ -1,3 +1,4 @@
+from sqlalchemy import desc
 from db_driver import session
 from db_driver import Users
 from db_driver import User_cash
@@ -48,7 +49,7 @@ def add_coin_cost(coin_name, date, cost):
 
 
 def get_coin_cost(coin_id):
-    result = session.query(Crypto_coin_cost).filter(Crypto_coin_cost.name == coin_id).first()
+    result = session.query(Crypto_coin_cost).filter(Crypto_coin_cost.name == coin_id).order_by(desc(Crypto_coin_cost.date)).first()
     if result:
         return result.cost
     else:
@@ -103,6 +104,7 @@ def get_cash(user_id=None):
     user_cash = session.query(User_cash).filter(User_cash.id == user_id).first()
     return user_cash.cash
 
+
 def change_user_state(user_id=None, state=None):
     if session.query(User_Status).filter(User_Status.user_id == user_id).first():
         user = session.query(User_Status).filter(User_Status.user_id == user_id).first()
@@ -111,11 +113,13 @@ def change_user_state(user_id=None, state=None):
     session.add(user_state)
     session.commit()
 
+
 def clear_user_state(user_id=None):
     if session.query(User_Status).filter(User_Status.user_id == user_id).first():
         user = session.query(User_Status).filter(User_Status.user_id == user_id).first()
         session.delete(user)
         session.commit()
+
 
 def setup_user_operation(user_id=None, coin_id=None, operation=None):
     user_operation = session.query(User_operation).filter(User_operation.user_id == user_id).first()
@@ -128,12 +132,14 @@ def setup_user_operation(user_id=None, coin_id=None, operation=None):
         session.add(user_operation)
     session.commit()
 
+
 def get_user_state(user_id):
     state = session.query(User_Status).filter(User_Status.user_id == user_id).first()
     if state != None:
         return state.state
     else:
         return None
+
 
 def add_user(first_name, username, user_id):
     user = Users(first_name, username, user_id)
@@ -145,4 +151,5 @@ def add_user(first_name, username, user_id):
 
 
 if __name__ == "__main__":
-    get_all_coin_id()
+    for coin in get_all_coin_id():
+        print(get_coin_cost(coin.id))

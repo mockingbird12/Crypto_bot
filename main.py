@@ -69,6 +69,7 @@ def watch_course(message):
         cost_info = cost_info + '{0} - {1}\n'.format(get_coin_name(coin.id), get_coin_cost(coin.id))
     bot.send_message(message.chat.id, cost_info)
 
+
 @bot.message_handler(commands=['help','start'])
 def main_start(message):
     print(message.from_user)
