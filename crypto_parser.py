@@ -3,12 +3,12 @@ import json
 import time
 import requests
 from db_functions import add_coin_cost, add_coin_name
+from config import crypto_tickets
 from db_driver import Crypto_coin_cost
 
 # crypto_tickets = {Bitcoin:'BTCUSD', Dash:'dashusd', Etherium:'ethusd',
 #                   IOTA:'iotusd', Litecoin:'ltcusd', Monero:'xmrusd',Ripple:'xrpusd',Zcash:'zecusd'}
-crypto_tickets = {'Bitcoin':'BTCUSD', 'Dash':'dashusd', 'Etherium':'ethusd',
-                  'IOTA':'iotusd', 'Litecoin':'ltcusd', 'Monero':'xmrusd','Ripple':'xrpusd','Zcash':'zecusd'}
+
 
 
 def get_data_from_bcs(ticket):

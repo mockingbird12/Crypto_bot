@@ -46,6 +46,10 @@ def choose_coin(message):
                                           get_user_state(message.from_user.id) == config.state_sel_coin)
 def choose_count(message):
     coin = message.text
+    if not get_coin_id(coin):
+        bot.send_message(message.from_user.id, conversation.wrong_coin)
+        clear_user_state(message.from_user.id)
+        return None
     setup_user_operation(message.from_user.id, get_coin_id(coin), get_user_state(message.from_user.id))
     change_user_state(message.from_user.id, config.choose_coin)
     bot.send_message(message.chat.id, 'Монета: {0}'.format(coin))
@@ -55,7 +59,11 @@ def choose_count(message):
 @bot.message_handler(func=lambda message: get_user_state(message.from_user.id) == config.choose_coin)
 def make_deal(message):
     print(get_user_state(message.from_user.id))
-    coin_count = int(message.text)
+    try:
+        coin_count = int(message.text)
+    except ValueError:
+        bot.send_message(message.chat.id, conversation.wrong_count)
+        return None
     bot.send_message(message.chat.id, conversation.buy_deal.format(str(coin_count)), reply_markup=markup.main_menu())
     clear_user_state(message.from_user.id)
 

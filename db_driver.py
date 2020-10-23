@@ -35,6 +35,7 @@ class Users(Base):
         self.username = username
         self.user_id = user_id
 
+
 class Crypto_coin_name(Base):
     __tablename__ = 'crypto_coin_name'
     id = Column(Integer, Sequence('crypto_coin_id_seq'), primary_key=True)
@@ -66,6 +67,7 @@ class User_cash(Base):
         self.id = id
         self.cash = cash
 
+
 class User_Status(Base):
     """
     Таблица для отслеживания статуса пользователя
@@ -79,15 +81,18 @@ class User_Status(Base):
         self.user_id = user_id
         self.state = state
 
+
 class User_portfolio(Base):
     __tablename__ = 'user_portfolio'
     id = Column(Integer, Sequence('user_portfolio_id'), primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'))
-    crypto_id = Column(Integer, ForeignKey('crypto_coin.id'))
+    crypto_id = Column(Integer, ForeignKey('crypto_coin_name.id'))
+    count = Column(Integer)
 
     def __init__(self, user_id, crypto_id):
         self.user_id = user_id
         self.crypto_id = crypto_id
+
 
 class User_operation(Base):
     """

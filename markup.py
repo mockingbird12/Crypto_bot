@@ -1,4 +1,5 @@
 from telebot import types
+from config import crypto_tickets
 
 def main_menu():
     markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
@@ -9,9 +10,8 @@ def main_menu():
     return markup
 
 def choose_coin():
-    coin_list = ['Bitcoin', 'Dash', 'Etherium Classic', 'Etherium', 'IOTA', 'LITECOIN', 'MONERO', 'RIPPLE', 'ZCASH']
     coin_markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
-    buttons = [types.KeyboardButton(item) for item in coin_list]
+    buttons = [types.KeyboardButton(item) for item in crypto_tickets.keys()]
     for button in buttons:
         coin_markup.add(button)
     return coin_markup

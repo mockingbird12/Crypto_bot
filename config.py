@@ -20,6 +20,10 @@ db_name = 'crypto_bot'
 
 working_mode = os.environ.get('working_mode')
 
+coin_list = ['Bitcoin', 'Dash', 'Etherium Classic', 'Etherium', 'IOTA', 'LITECOIN', 'MONERO', 'RIPPLE', 'ZCASH']
+crypto_tickets = {'Bitcoin':'BTCUSD', 'Dash':'dashusd', 'Etherium':'ethusd',
+                  'IOTA':'iotusd', 'Litecoin':'ltcusd', 'Monero':'xmrusd','Ripple':'xrpusd','Zcash':'zecusd'}
+
 state_buy_coin = 141
 state_sel_coin = 142
 choose_coin = 143

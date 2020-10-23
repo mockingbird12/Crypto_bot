@@ -5,7 +5,7 @@ from db_driver import User_cash
 from db_driver import User_Status
 from db_driver import User_operation
 from db_driver import Crypto_coin_cost, Crypto_coin_name
-import datetime
+import config
 
 def add_coin_name(name):
     coin_name = session.query(Crypto_coin_name).filter(Crypto_coin_name.name == name).first()
@@ -114,6 +114,15 @@ def change_user_state(user_id=None, state=None):
     session.commit()
 
 
+def buy_sell_coin(user_id=None, coin_id=None, coin_count=None):
+    user_cash = get_cash(user_id)
+    total_cost = get_coin_cost(coin_id) * coin_count
+    operation = get_user_operation(user_id, coin_id)
+    if operation == config.state_buy_coin:
+        if user_cash > total_cost:
+            print('Buy coin')
+
+
 def clear_user_state(user_id=None):
     if session.query(User_Status).filter(User_Status.user_id == user_id).first():
         user = session.query(User_Status).filter(User_Status.user_id == user_id).first()
@@ -122,6 +131,7 @@ def clear_user_state(user_id=None):
 
 
 def setup_user_operation(user_id=None, coin_id=None, operation=None):
+    """Записывает в базу какое действие выполнил пользователь"""
     user_operation = session.query(User_operation).filter(User_operation.user_id == user_id).first()
     if not user_operation:
         user_operation = User_operation(user_id, coin_id, operation)
@@ -132,6 +142,14 @@ def setup_user_operation(user_id=None, coin_id=None, operation=None):
         session.add(user_operation)
     session.commit()
 
+
+def get_user_operation(user_id=None, coin_id=None):
+    if user_id and coin_id:
+        user_operation = session.query(User_operation.operation).filter(User_operation.user_id == user_id).first()
+        return user_operation
+    else:
+        print('Params are empty')
+        return None
 
 def get_user_state(user_id):
     state = session.query(User_Status).filter(User_Status.user_id == user_id).first()
