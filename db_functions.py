@@ -4,8 +4,10 @@ from db_driver import Users
 from db_driver import User_cash
 from db_driver import User_Status
 from db_driver import User_operation
+from db_driver import User_portfolio
 from db_driver import Crypto_coin_cost, Crypto_coin_name
 import config
+
 
 def add_coin_name(name):
     coin_name = session.query(Crypto_coin_name).filter(Crypto_coin_name.name == name).first()
@@ -17,6 +19,7 @@ def add_coin_name(name):
         session.add(coin_name)
         session.commit()
 
+
 def get_coin_name(coin_id):
     coin_name = session.query(Crypto_coin_name).filter(Crypto_coin_name.id == coin_id).first()
     if coin_name:
@@ -24,12 +27,18 @@ def get_coin_name(coin_id):
     else:
         return None
 
+
+def get_all_user_coin(user_id):
+    coins_id = session.query(User_portfolio.crypto_id).filter(User_portfolio.user_id == user_id).all()
+    return coins_id
+
 def get_coin_course(coin):
     result = session.query(coin).last()
     if result:
         return result.cost
     else:
         return None
+
 
 def add_coin_cost(coin_name, date, cost):
     coin_id = get_coin_id(coin_name)
@@ -54,6 +63,7 @@ def get_coin_cost(coin_id):
         return result.cost
     else:
         return None
+
 
 def is_exsist(**kwargs):
     """
@@ -81,6 +91,12 @@ def get_coin_id(coin_name):
     else:
         return None
 
+def get_coin_count(coin_id, user_id):
+    user_coins = session.query(User_portfolio).filter(User_portfolio.crypto_id == coin_id, User_portfolio.user_id == user_id).first()
+    if user_coins:
+        return user_coins.count
+    else:
+        return None
 
 def get_all_coin_id():
     coins = session.query(Crypto_coin_name).all()
@@ -114,13 +130,50 @@ def change_user_state(user_id=None, state=None):
     session.commit()
 
 
-def buy_sell_coin(user_id=None, coin_id=None, coin_count=None):
+def buy_sell_coin(user_id=None, coin_count=None):
     user_cash = get_cash(user_id)
+    coin_id, operation = get_user_operation(user_id)
+    user_coins = get_coin_count(coin_id, user_id)
     total_cost = get_coin_cost(coin_id) * coin_count
-    operation = get_user_operation(user_id, coin_id)
     if operation == config.state_buy_coin:
         if user_cash > total_cost:
             print('Buy coin')
+            user_portfolio = User_portfolio()
+            user_portfolio.user_id = user_id
+            user_portfolio.crypto_id = coin_id
+            if user_coins:
+                user_portfolio.count = user_coins + coin_count
+            else:
+                user_portfolio.count = coin_count
+            session.add(user_portfolio)
+            new_user_cash = session.query(User_cash).filter(User_cash.id == user_id).first()
+            new_user_cash.cash -= total_cost
+            session.commit()
+            return True
+        else:
+            print('Not enough cash')
+            return False
+    if operation == config.state_sel_coin:
+        if user_coins:
+            if coin_count < user_coins:
+                print('Sell coin')
+                user_portfolio = User_portfolio()
+                user_portfolio.user_id = user_id
+                user_portfolio.crypto_id = coin_id
+                user_portfolio.count = user_coins - coin_count
+                session.add(user_portfolio)
+                new_user_cash = User_cash(user_id, user_cash + total_cost)
+                session.add(new_user_cash)
+                session.commit()
+            else:
+                print('Not enough coins')
+                return False
+        else:
+            print('No coin {0} in user portfolio'.format(get_coin_name(coin_id)))
+            return False
+    else:
+        print('No such operation {0}'.format(operation))
+        return False
 
 
 def clear_user_state(user_id=None):
@@ -142,11 +195,21 @@ def setup_user_operation(user_id=None, coin_id=None, operation=None):
         session.add(user_operation)
     session.commit()
 
+def clear_user_operation(user_id):
+    user_operation = session.query(User_operation).filter(User_operation.user_id == user_id).first()
+    if user_operation:
+        session.delete(user_operation)
+        session.commit()
+    else:
+        print('No user operation for user {0}'.format(user_id))
+        return True
 
-def get_user_operation(user_id=None, coin_id=None):
-    if user_id and coin_id:
-        user_operation = session.query(User_operation.operation).filter(User_operation.user_id == user_id).first()
-        return user_operation
+
+def get_user_operation(user_id=None):
+    """Возвращает user_oeration из которого можно вязть coin_id и user_operation"""
+    if user_id:
+        user_operation = session.query(User_operation).filter(User_operation.user_id == user_id).first()
+        return user_operation.coin_id, int(user_operation.operation)
     else:
         print('Params are empty')
         return None

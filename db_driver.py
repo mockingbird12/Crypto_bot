@@ -61,7 +61,6 @@ class User_cash(Base):
     __tablename__ = 'user_cash'
     id = Column(Integer, ForeignKey('users.user_id'), primary_key=True)
     cash = Column(Float)
-    # user_id = Column(Integer, ForeignKey('users.user_id'))
 
     def __init__(self, id, cash):
         self.id = id
@@ -85,13 +84,9 @@ class User_Status(Base):
 class User_portfolio(Base):
     __tablename__ = 'user_portfolio'
     id = Column(Integer, Sequence('user_portfolio_id'), primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    user_id = Column(Integer, ForeignKey('users.user_id'))
     crypto_id = Column(Integer, ForeignKey('crypto_coin_name.id'))
     count = Column(Integer)
-
-    def __init__(self, user_id, crypto_id):
-        self.user_id = user_id
-        self.crypto_id = crypto_id
 
 
 class User_operation(Base):

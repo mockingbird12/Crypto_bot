@@ -4,9 +4,9 @@ import config
 import markup
 import cherrypy
 from db_functions import add_user, is_exsist, get_cash, change_user_state, get_user_state, clear_user_state
-from db_functions import setup_user_operation, get_all_coin_id, get_coin_cost, get_coin_name
-from db_functions import get_coin_id
-from db_functions import crypto_value
+from db_functions import setup_user_operation, get_all_coin_id, get_coin_cost, get_coin_name, get_all_user_coin
+from db_functions import get_coin_id, get_coin_count
+from db_functions import buy_sell_coin, clear_user_operation
 
 
 bot = telebot.TeleBot(config.token)
@@ -26,6 +26,10 @@ def chouse_coin(message):
 def watch_portfolio(message):
     user_cash = get_cash(message.chat.id)
     bot.send_message(message.chat.id, conversation.watch_portfolio.format(user_cash))
+    res = ''
+    for coin in get_all_user_coin(message.from_user.id):
+        res += '{0} - {1}\n'.format(get_coin_name(coin), get_coin_count(coin, message.from_user.id))
+    bot.send_message(message.chat.id, res)
     print('Запрос к базе о портфеле')
 
 
@@ -52,7 +56,7 @@ def choose_count(message):
         return None
     setup_user_operation(message.from_user.id, get_coin_id(coin), get_user_state(message.from_user.id))
     change_user_state(message.from_user.id, config.choose_coin)
-    bot.send_message(message.chat.id, 'Монета: {0}'.format(coin))
+    bot.send_message(message.chat.id, 'Монета: {0} стоимость {1}'.format(coin, get_coin_cost(get_coin_id(coin))))
     bot.send_message(message.chat.id, conversation.coin_count)
 
 
@@ -64,8 +68,13 @@ def make_deal(message):
     except ValueError:
         bot.send_message(message.chat.id, conversation.wrong_count)
         return None
-    bot.send_message(message.chat.id, conversation.buy_deal.format(str(coin_count)), reply_markup=markup.main_menu())
-    clear_user_state(message.from_user.id)
+    if buy_sell_coin(message.from_user.id, coin_count=coin_count):
+        bot.send_message(message.chat.id, conversation.buy_deal.format(str(coin_count)),
+                         reply_markup=markup.main_menu())
+        clear_user_state(message.from_user.id)
+        clear_user_operation(message.from_user.id)
+    else:
+        bot.send_message(message.chat.id, conversation.error_deal)
 
 
 @bot.message_handler(func=lambda message: message.text == 'Watch course')
