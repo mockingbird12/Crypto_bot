@@ -96,7 +96,7 @@ class User_operation(Base):
     __tablename__ = 'user_operation'
     id = Column(Integer, Sequence('user_operation_id'), primary_key=True)
     user_id = Column(Integer, ForeignKey('users.user_id'))
-    coin_id = Column(Integer, ForeignKey('crypto_coin.id'))
+    coin_id = Column(Integer, ForeignKey('crypto_coin_name.id'))
     operation = Column(Text)
 
     def __init__(self, user_id, coin_id, operation):
