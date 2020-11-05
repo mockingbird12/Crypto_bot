@@ -27,10 +27,14 @@ def watch_portfolio(message):
     user_cash = get_cash(message.chat.id)
     bot.send_message(message.chat.id, conversation.watch_portfolio.format(user_cash))
     res = ''
-    for coin in get_all_user_coin(message.from_user.id):
-        res += '{0} - {1}\n'.format(get_coin_name(coin), get_coin_count(coin, message.from_user.id))
+    crypto_cash = 0
+    for coin_id in get_all_user_coin(message.from_user.id):
+        count = get_coin_count(coin_id, message.from_user.id)
+        res += '{0} - {1} - \t{2}\n'.format(get_coin_name(coin_id), count , count * round(get_coin_cost(coin_id), 2))
+        crypto_cash += count * get_coin_cost(coin_id)
     bot.send_message(message.chat.id, res)
-    print('Запрос к базе о портфеле')
+    bot.send_message(message.chat.id, conversation.crypto_cash.format(str(crypto_cash)))
+    bot.send_message(message.chat.id, conversation.total_cash.format(str(user_cash + crypto_cash)))
 
 
 @bot.message_handler(func=lambda message: message.text == 'Sell coin')

@@ -13,5 +13,5 @@ COPY . .
 ENV db_host="172.17.0.1"
 ENV working_mode="server"
 
-#CMD ["python", "./main.py"]
-CMD ["python", "./crypto_parser.py"]
+CMD ["python", "./main.py"]
+#CMD ["python", "./crypto_parser.py"]
