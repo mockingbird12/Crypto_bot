@@ -53,7 +53,7 @@ def choose_coin(message):
 @bot.message_handler(func=lambda message: get_user_state(message.from_user.id) == config.state_buy_coin or
                                           get_user_state(message.from_user.id) == config.state_sel_coin)
 def choose_count(message):
-    coin = message.text
+    coin = message.text.split()[0]
     if not get_coin_id(coin):
         bot.send_message(message.from_user.id, conversation.wrong_coin)
         clear_user_state(message.from_user.id)
